@@ -25,16 +25,29 @@ if __name__ == "__main__":
     if len(sys.argv)!=4:
         print("please input files name\n")
         exit(0)
-    with open(sys.argv[1], 'r', encoding='utf-8') as f:
-        doc0 = f.read()
-    f.close()
-    with open(sys.argv[2], 'r', encoding='utf-8') as f:
-        doc1 = f.read()
-    f.close()
+    try:
+        with open(sys.argv[1], 'r', encoding='utf-8') as f:
+            doc0 = f.read()
+        f.close()
+    except Exception as e:
+        print("无法读取第一篇文件\n")
+        exit()
+    try:
+        with open(sys.argv[2], 'r', encoding='utf-8') as f:
+            doc1 = f.read()
+        f.close()
+    except Exception as e:
+        print("无法读取第二篇文件\n")
+        exit()
     tf1 = calculate_tf(doc0)
     tf2 = calculate_tf(doc1)
 
     similarity = cosine_similarity(tf1, tf2)
     result = "%.2f" % similarity
-    f = open(sys.argv[3], 'w+', encoding='utf-8')
-    f.write(f"文档1与文档2的相似度：{result}")
+    try:
+        f = open(sys.argv[3], 'w+', encoding='utf-8')
+        f.write(f"文档1与文档2的相似度：{result}")
+        f.close()
+    except Exception as e:
+        print("无法写入结果文件\n")
+        exit()
