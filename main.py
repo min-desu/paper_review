@@ -1,4 +1,4 @@
-import math, jieba
+import math, jieba, sys
 
 # 文本分词函数，这里使用了jieba
 def tokenize(text):
@@ -22,13 +22,19 @@ def cosine_similarity(tf1, tf2):
     return dot_product / (magnitude1 * magnitude2)
 
 if __name__ == "__main__":
-    doc = [
-        "第一篇文档的内容",
-        "第二	篇文档的内容"
-    ]
-
-    tf1 = calculate_tf(doc[0])
-    tf2 = calculate_tf(doc[1])
+    if len(sys.argv)!=4:
+        print("please input files name\n")
+        exit(0)
+    with open(sys.argv[1], 'r', encoding='utf-8') as f:
+        doc0 = f.read()
+    f.close()
+    with open(sys.argv[2], 'r', encoding='utf-8') as f:
+        doc1 = f.read()
+    f.close()
+    tf1 = calculate_tf(doc0)
+    tf2 = calculate_tf(doc1)
 
     similarity = cosine_similarity(tf1, tf2)
-    print(f"文档1与文档2的余弦相似度：{similarity}")
+    result = "%.2f" % similarity
+    f = open(sys.argv[3], 'w+', encoding='utf-8')
+    f.write(f"文档1与文档2的相似度：{result}")
